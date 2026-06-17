@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { FileText, Zap, Shield, Globe, BarChart3, Brain, CheckCircle, ArrowRight, Star, Users, Upload, MessageSquare } from 'lucide-react'
 
 const FEATURES = [
-  { icon: MessageSquare, title: 'Chat with any document', desc: 'Ask questions in plain language. Get cited, accurate answers from PDF, Word, TXT, CSV — powered by Groq Llama 3.1 70B.', color: '#6c3de8' },
+  { icon: MessageSquare, title: 'Chat with any document', desc: 'Ask questions in plain language. Get cited, accurate answers from PDF, Word, TXT, CSV — powered by Groq Llama 3.3 70B.', color: '#6c3de8' },
   { icon: BarChart3, title: 'Data dashboard + AI', desc: 'Upload CSV or Excel → auto-generates bar, line, pie, scatter charts + AI Q&A on your data. No BI tool needed.', color: '#4f46e5' },
   { icon: Brain, title: 'Smart summarizer', desc: '3 levels: Quick (2 lines), Detailed (1 page), Full breakdown. Download or copy your summary instantly.', color: '#0891b2' },
   { icon: Zap, title: 'Quiz generator', desc: 'Auto-generate MCQ and True/False questions from any document. AI-graded with explanations and scores.', color: '#059669' },

@@ -206,6 +206,10 @@ export default function AppPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: msg, context, language, history }),
       })
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}))
+        throw new Error(errData.error || `Server error: ${res.status}`)
+      }
       const reader = res.body!.getReader()
       const decoder = new TextDecoder()
       let full = ''
@@ -224,7 +228,7 @@ export default function AppPage() {
       const sources = results.map((r, i) => ({ section: i + 1, preview: r.text.slice(0, 100) + '...', score: r.score }))
       addMessage(activeDoc.id, { role: 'assistant', content: full, sources, createdAt: new Date().toISOString() })
     } catch (e: any) {
-      toast.error('Chat failed')
+      toast.error(e.message || 'Chat failed')
     } finally {
       setStreaming(false)
       setStreamContent('')
@@ -482,7 +486,7 @@ export default function AppPage() {
                     ))}
                   </div>
                   <p style={{ fontSize: 12, color: 'var(--text-tertiary)', lineHeight: 1.6 }}>
-                    Document → text extraction → 800-char sliding window chunks → TF-IDF vectors → ChromaDB index → Groq Llama 3.1 70B answers your questions citing exact sections.
+                    Document → text extraction → 800-char sliding window chunks → TF-IDF vectors → ChromaDB index → Groq Llama 3.3 70B answers your questions citing exact sections.
                   </p>
                 </div>
               </div>
@@ -517,7 +521,7 @@ export default function AppPage() {
                   <span style={{ fontSize: 18 }}>{getDocEmoji(activeDoc.name)}</span>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>{activeDoc.name}</div>
-                    <div style={{ fontSize: 11, color: 'var(--text-tertiary)' }}>{activeDoc.chunkCount} chunks · {activeDoc.pages} pages · Groq Llama 3.1 70B</div>
+                    <div style={{ fontSize: 11, color: 'var(--text-tertiary)' }}>{activeDoc.chunkCount} chunks · {activeDoc.pages} pages · Groq Llama 3.3 70B</div>
                   </div>
                   <div style={{ display: 'flex', gap: 7 }}>
                     <button className="btn btn-ghost btn-sm" onClick={() => setView('summary')}>📝 Summary</button>
@@ -539,7 +543,7 @@ export default function AppPage() {
                   <div style={{ textAlign: 'center', margin: 'auto' }}>
                     <div style={{ fontSize: 40, marginBottom: 12 }}>💬</div>
                     <div style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-secondary)', marginBottom: 6 }}>Ask anything about your document</div>
-                    <p style={{ fontSize: 13, color: 'var(--text-tertiary)', marginBottom: 20 }}>Powered by Groq · Llama 3.1 70B · RAG retrieval</p>
+                    <p style={{ fontSize: 13, color: 'var(--text-tertiary)', marginBottom: 20 }}>Powered by Groq · Llama 3.3 70B · RAG retrieval</p>
                   </div>
                 ) : null}
 
@@ -615,7 +619,7 @@ export default function AppPage() {
                   </button>
                 </div>
                 <div style={{ fontSize: 11, color: 'var(--text-tertiary)', textAlign: 'center', marginTop: 7 }}>
-                  Groq · Llama 3.1 70B · TF-IDF RAG · Privacy-first
+                  Groq · Llama 3.3 70B · TF-IDF RAG · Privacy-first
                 </div>
               </div>
             </div>

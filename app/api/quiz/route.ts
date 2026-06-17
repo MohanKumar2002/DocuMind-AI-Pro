@@ -1,10 +1,13 @@
 import { NextRequest } from 'next/server'
 import Groq from 'groq-sdk'
-
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
-
 export async function POST(req: NextRequest) {
   try {
+    const apiKey = process.env.GROQ_API_KEY
+    if (!apiKey) {
+      return Response.json({ error: 'The GROQ_API_KEY environment variable is missing or empty on the server.' }, { status: 500 })
+    }
+    const groq = new Groq({ apiKey })
+
     const { text, count = 10, type = 'mcq', difficulty = 'medium', language = 'en' } = await req.json()
     if (!text) return Response.json({ error: 'No text provided' }, { status: 400 })
 

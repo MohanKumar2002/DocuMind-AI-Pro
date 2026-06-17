@@ -1,8 +1,6 @@
 import { NextRequest } from 'next/server'
 import Groq from 'groq-sdk'
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY })
-
 const LANG_INSTRUCTIONS: Record<string, string> = {
   en: 'Respond in English.',
   ta: 'Respond entirely in Tamil (தமிழ்). Even if the document is in English, answer in Tamil.',
@@ -13,6 +11,12 @@ const LANG_INSTRUCTIONS: Record<string, string> = {
 
 export async function POST(req: NextRequest) {
   try {
+    const apiKey = process.env.GROQ_API_KEY
+    if (!apiKey) {
+      return Response.json({ error: 'The GROQ_API_KEY environment variable is missing or empty on the server.' }, { status: 500 })
+    }
+    const groq = new Groq({ apiKey })
+
     const { message, context, language = 'en', history = [] } = await req.json()
 
     if (!message || !context) {
@@ -43,7 +47,7 @@ ${context}`
     ]
 
     const stream = await groq.chat.completions.create({
-      model: process.env.GROQ_MODEL || 'llama-3.1-70b-versatile',
+      model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
       messages,
       max_tokens: 1500,
       temperature: 0.3,

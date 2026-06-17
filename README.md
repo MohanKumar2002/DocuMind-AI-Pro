@@ -23,7 +23,7 @@ Chat with any document. Upload PDF, Word, CSV, Excel — ask questions, get cite
 | Layer | Tech | Cost |
 |---|---|---|
 | Framework | Next.js 14 (App Router) | Free |
-| AI | Groq — Llama 3.3 70B | Free (14,400 req/day) |
+| AI | Google Gemini 2.5 Flash | Free |
 | Retrieval | Custom TF-IDF + cosine similarity | Free |
 | Charts | Chart.js + react-chartjs-2 | Free |
 | File parsing | PDF.js, Mammoth, SheetJS | Free |

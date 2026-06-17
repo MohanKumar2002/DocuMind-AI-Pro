@@ -1,12 +1,12 @@
 import { NextRequest } from 'next/server'
-import Groq from 'groq-sdk'
+import { GoogleGenAI } from '@google/genai'
 export async function POST(req: NextRequest) {
   try {
-    const apiKey = process.env.GROQ_API_KEY
+    const apiKey = process.env.GEMINI_API_KEY
     if (!apiKey) {
-      return Response.json({ error: 'The GROQ_API_KEY environment variable is missing or empty on the server.' }, { status: 500 })
+      return Response.json({ error: 'The GEMINI_API_KEY environment variable is missing or empty on the server.' }, { status: 500 })
     }
-    const groq = new Groq({ apiKey })
+    const ai = new GoogleGenAI({ apiKey })
 
     const { text, count = 10, type = 'mcq', difficulty = 'medium', language = 'en' } = await req.json()
     if (!text) return Response.json({ error: 'No text provided' }, { status: 400 })
@@ -26,16 +26,19 @@ Return ONLY valid JSON array, no markdown, no explanation:
 [{"q":"Question","options":["A) opt","B) opt","C) opt","D) opt"],"answer":0,"explanation":"Why correct"}]
 
 Document:
-${text.slice(0, 10000)}`
+${text.slice(0, 20000)}`
 
-    const response = await groq.chat.completions.create({
-      model: process.env.GROQ_MODEL_FAST || 'llama-3.1-8b-instant',
-      messages: [{ role: 'user', content: prompt }],
-      max_tokens: 3000,
-      temperature: 0.4,
+    const response = await ai.models.generateContent({
+      model: process.env.GEMINI_MODEL_FAST || 'gemini-2.5-flash',
+      contents: prompt,
+      config: {
+        maxOutputTokens: 3000,
+        temperature: 0.4,
+        responseMimeType: "application/json"
+      }
     })
 
-    let raw = response.choices[0].message.content || '[]'
+    let raw = response.text || '[]'
     raw = raw.replace(/```json|```/g, '').trim()
     const match = raw.match(/\[[\s\S]*\]/)
     const questions = match ? JSON.parse(match[0]) : []

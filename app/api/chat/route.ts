@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server'
-import Groq from 'groq-sdk'
+import { GoogleGenAI } from '@google/genai'
 
 const LANG_INSTRUCTIONS: Record<string, string> = {
   en: 'Respond in English.',
@@ -11,11 +11,11 @@ const LANG_INSTRUCTIONS: Record<string, string> = {
 
 export async function POST(req: NextRequest) {
   try {
-    const apiKey = process.env.GROQ_API_KEY
+    const apiKey = process.env.GEMINI_API_KEY
     if (!apiKey) {
-      return Response.json({ error: 'The GROQ_API_KEY environment variable is missing or empty on the server.' }, { status: 500 })
+      return Response.json({ error: 'The GEMINI_API_KEY environment variable is missing or empty on the server.' }, { status: 500 })
     }
-    const groq = new Groq({ apiKey })
+    const ai = new GoogleGenAI({ apiKey })
 
     const { message, context, language = 'en', history = [] } = await req.json()
 
@@ -40,25 +40,30 @@ RULES:
 DOCUMENT SECTIONS:
 ${context}`
 
-    const messages: any[] = [
-      { role: 'system', content: systemPrompt },
-      ...history.slice(-6),
-      { role: 'user', content: message }
-    ]
+    const geminiHistory = history.map((m: any) => ({
+      role: m.role === 'user' ? 'user' : 'model',
+      parts: [{ text: m.content }]
+    }))
 
-    const stream = await groq.chat.completions.create({
-      model: process.env.GROQ_MODEL || 'llama-3.3-70b-versatile',
-      messages,
-      max_tokens: 1500,
-      temperature: 0.3,
-      stream: true,
+    const chat = ai.chats.create({
+      model: process.env.GEMINI_MODEL || 'gemini-2.5-flash',
+      history: geminiHistory,
+      config: {
+        systemInstruction: systemPrompt,
+        temperature: 0.3,
+        maxOutputTokens: 1500,
+      }
+    })
+
+    const stream = await chat.sendMessageStream({
+      message: message
     })
 
     const encoder = new TextEncoder()
     const readable = new ReadableStream({
       async start(controller) {
         for await (const chunk of stream) {
-          const delta = chunk.choices[0]?.delta?.content || ''
+          const delta = chunk.text || ''
           if (delta) {
             controller.enqueue(encoder.encode(`data: ${JSON.stringify({ delta })}\n\n`))
           }
@@ -79,3 +84,4 @@ ${context}`
     return Response.json({ error: error.message || 'Chat failed' }, { status: 500 })
   }
 }
+

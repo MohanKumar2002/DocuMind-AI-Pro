@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server'
-import Groq from 'groq-sdk'
+import { GoogleGenAI } from '@google/genai'
 
 const LEVEL_PROMPTS: Record<string, string> = {
   quick: 'Write a 2-3 sentence executive summary. Be extremely concise and direct.',
@@ -19,11 +19,11 @@ const LEVEL_PROMPTS: Record<string, string> = {
 
 export async function POST(req: NextRequest) {
   try {
-    const apiKey = process.env.GROQ_API_KEY
+    const apiKey = process.env.GEMINI_API_KEY
     if (!apiKey) {
-      return Response.json({ error: 'The GROQ_API_KEY environment variable is missing or empty on the server.' }, { status: 500 })
+      return Response.json({ error: 'The GEMINI_API_KEY environment variable is missing or empty on the server.' }, { status: 500 })
     }
-    const groq = new Groq({ apiKey })
+    const ai = new GoogleGenAI({ apiKey })
 
     const { text, level = 'detailed', language = 'en' } = await req.json()
     if (!text) return Response.json({ error: 'No text provided' }, { status: 400 })
@@ -31,19 +31,18 @@ export async function POST(req: NextRequest) {
     const langMap: Record<string, string> = { en:'English', ta:'Tamil (தமிழ்)', hi:'Hindi (हिन्दी)', te:'Telugu (తెలుగు)', de:'German (Deutsch)' }
     const lang = langMap[language] || 'English'
 
-    const response = await groq.chat.completions.create({
-      model: process.env.GROQ_MODEL_FAST || 'llama-3.1-8b-instant',
-      messages: [{
-        role: 'user',
-        content: `${LEVEL_PROMPTS[level]}\n\nRespond in ${lang}. Use markdown formatting.\n\nDocument:\n${text.slice(0, 12000)}`
-      }],
-      max_tokens: 2000,
-      temperature: 0.2,
+    const response = await ai.models.generateContent({
+      model: process.env.GEMINI_MODEL_FAST || 'gemini-2.5-flash',
+      contents: `${LEVEL_PROMPTS[level]}\n\nRespond in ${lang}. Use markdown formatting.\n\nDocument:\n${text.slice(0, 25000)}`,
+      config: {
+        maxOutputTokens: 2000,
+        temperature: 0.2,
+      }
     })
 
     return Response.json({
-      summary: response.choices[0].message.content,
-      tokens: response.usage?.total_tokens
+      summary: response.text,
+      tokens: response.usageMetadata?.totalTokenCount
     })
   } catch (e: any) {
     return Response.json({ error: e.message }, { status: 500 })

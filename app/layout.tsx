@@ -4,7 +4,7 @@ import { Toaster } from 'react-hot-toast'
 
 export const metadata: Metadata = {
   title: 'DocuMind AI — Chat with your documents',
-  description: 'Upload any document and chat with it instantly. Summarize, quiz, extract, analyze — powered by Groq Llama 3.1 + HuggingFace. Built by MOH AI TECH, Namakkal.',
+  description: 'Upload any document and chat with it instantly. Summarize, quiz, extract, analyze — powered by Google Gemini + HuggingFace. Built by MOH AI TECH, Namakkal.',
   keywords: ['AI', 'document', 'chat', 'PDF', 'summarize', 'quiz', 'RAG', 'MOH AI TECH'],
   authors: [{ name: 'Mohan Kumar S', url: 'https://moh-ai-tech.vercel.app' }],
   openGraph: {

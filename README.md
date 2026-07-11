@@ -1,220 +1,118 @@
-# 🧠 DocuMind AI Pro
+<div align="center">
+  <h1 align="center">DocuMind AI Pro</h1>
+  <h3 align="center">Enterprise Document Intelligence by Mohan Kumar S</h3>
+  
+  <p align="center">
+    <a href="https://mohankumar-ai.vercel.app/" target="_blank">Portfolio</a> •
+    <a href="https://www.linkedin.com/in/mohan-kumar-subramanian-a46a77226" target="_blank">LinkedIn</a> •
+    <a href="mailto:mohanmohanmk684@gmail.com">Contact</a>
+  </p>
 
-**Enterprise document intelligence platform**  
-Built by **Mohan Kumar S** — Founder, MOH AI TECH · Namakkal, Tamil Nadu 🇮🇳
+  <img src="https://readme-typing-svg.demolab.com?font=Inter&weight=500&size=20&duration=4000&pause=1000&color=0066FF&center=true&vCenter=true&width=800&lines=Chat+with+any+PDF+instantly;Automated+Invoice+Data+Extraction;Intelligent+Document+Summarization;Built+with+FastAPI,+React,+and+Groq" alt="Typing Header" />
+</div>
+
+<br/>
+
+> **Project Mission:** Architecting the next generation of intelligent document systems. DocuMind AI Pro is a full-stack platform that leverages Retrieval-Augmented Generation (RAG) and ultra-fast LLMs to extract insights, chat with enterprise data, and automate data-entry workflows securely.
+
+<br/>
+
+### 🔬 Core Technology Stack
+
+<p align="center">
+  <a href="https://skillicons.dev">
+    <img src="https://skillicons.dev/icons?i=python,js,react,fastapi,tailwind,postgres,git,docker,linux&theme=dark&perline=12" alt="Skill Icons" />
+  </a>
+</p>
 
 ---
 
-## 🏗️ Architecture
+<table width="100%" style="border: none;">
+<tr>
+<td width="50%" valign="top">
 
+### 💼 Core Capabilities
+
+**Intelligent Data Extraction**  
+- Automatically extract structured data (JSON, CSV) from unstructured documents like invoices, receipts, and forms.
+- Replaces hours of manual data entry with instant, AI-driven precision.
+
+<br/>
+
+**RAG-Powered Document Chat**  
+- Seamlessly query 1000+ page PDFs in seconds. 
+- The system embeds text via HuggingFace `all-MiniLM-L6-v2` and searches via ChromaDB, ensuring all answers are grounded in your actual files.
+
+</td>
+<td width="50%" valign="top">
+
+### 🧠 System Architecture
+
+```python
+from fastapi import FastAPI
+from documind import GroqLLM, VectorStore
+
+app = FastAPI(title="DocuMind AI Pro")
+
+@app.post("/extract-invoice")
+async def extract_data(doc_id: str, target_schema: dict):
+    # Retrieve relevant document chunks
+    context = VectorStore.get_context(doc_id)
+    
+    # Extract structured JSON using Groq
+    ai = GroqLLM(model="llama-3.1-70b")
+    result = await ai.extract_json(context, target_schema)
+    
+    return {"status": "success", "data": result}
 ```
-documind-pro/
-├── backend/                    # Python FastAPI
-│   ├── main.py                 # App entry point + middleware
-│   ├── config.py               # Settings + plan limits
-│   ├── database.py             # Supabase + ChromaDB clients
-│   ├── requirements.txt        # Python dependencies
-│   ├── start.sh                # One-command startup
-│   └── routers/
-│       ├── auth.py             # Signup, login, JWT
-│       ├── documents.py        # Upload → extract → chunk → embed → index
-│       ├── chat.py             # RAG pipeline + Groq streaming
-│       ├── summary.py          # AI summarization (3 levels)
-│       ├── quiz.py             # Quiz generation + submission
-│       ├── dashboard.py        # CSV/Excel AI dashboard
-│       ├── payments.py         # Razorpay subscription billing
-│       └── health.py           # Health check endpoint
-│
-└── frontend/                   # React + Vite
-    ├── index.html
-    ├── vite.config.js
-    ├── package.json
-    └── src/
-        ├── main.jsx            # React entry point
-        ├── App.jsx             # Router + auth guard
-        ├── index.css           # Global design system
-        ├── store.js            # Zustand global state
-        ├── workers/
-        │   └── aiPipeline.worker.js  # Web Worker — AI off main thread
-        ├── utils/
-        │   └── api.js          # Axios client + all API calls
-        ├── hooks/
-        │   └── useDocuments.js # Document fetch/delete hook
-        ├── components/
-        │   ├── layout/
-        │   │   ├── AppLayout.jsx       # Sidebar + header + outlet
-        │   │   └── AppLayout.module.css
-        │   └── ui/
-        │       └── HardwareWarning.jsx # Mobile/WebGPU warning
-        └── pages/
-            ├── LandingPage.jsx    # Marketing homepage
-            ├── LoginPage.jsx      # Auth
-            ├── SignupPage.jsx     # Auth
-            ├── UploadPage.jsx     # Drag-drop + pipeline viz
-            ├── ChatPage.jsx       # Streaming RAG chat
-            ├── DashboardPage.jsx  # CSV/Excel charts + AI Q&A
-            ├── SummaryPage.jsx    # AI summarizer
-            ├── QuizPage.jsx       # Quiz generator
-            ├── PricingPage.jsx    # Pricing tiers
-            └── ProfilePage.jsx    # User profile + usage
-```
+</td>
+</tr>
+</table>
 
 ---
 
-## ⚙️ Tech Stack
+### 🚀 Key Architectures & Pipelines
 
-| Layer | Technology | Cost |
-|-------|-----------|------|
-| **AI LLM** | Groq API — Llama 3.1 70B | Free (14,400 req/day) |
-| **Embeddings** | HuggingFace `all-MiniLM-L6-v2` | Free (local) |
-| **Vector DB** | ChromaDB (persistent) | Free (local) |
-| **Auth + DB** | Supabase (PostgreSQL + RLS) | Free (500MB) |
-| **Payments** | Razorpay | Free (2% per txn) |
-| **Frontend** | React + Vite | Free |
-| **Backend** | FastAPI + Python | Free |
-| **Hosting** | Vercel (frontend) + Railway (backend) | Free tier |
-| **Web Worker** | Browser Web Worker | Free (browser) |
-| **PDF parsing** | PyMuPDF + PDF.js | Free |
-| **OCR** | Tesseract.js | Free |
-
-**Total monthly infrastructure cost: ₹0** until you scale beyond free tiers.
+| Feature | Technical Implementation | Business Impact |
+| :--- | :--- | :--- |
+| **Full-Stack SaaS Hub** | `React`, `FastAPI`, `Supabase` | Delivers a scalable, secure enterprise platform featuring real-time interactive tools and unified plan management. |
+| **Instant Data Extraction** | `Groq JSON Mode`, `LLMs` | Automates complex data-entry pipelines, turning raw PDFs into structured Excel/CSV data instantly. |
+| **Context-Aware AI Chat** | `RAG`, `ChromaDB`, `HuggingFace` | Engineered conversational agents grounded in custom enterprise knowledge bases, autonomously resolving queries with exact citations. |
 
 ---
 
-## 🚀 Setup Guide
+<table width="100%" style="border: none;">
+<tr>
+<td width="50%" valign="top">
 
-### Step 1 — Get your free API keys
+### 📚 Project Structure
 
-| Service | URL | What you need |
-|---------|-----|---------------|
-| Groq | https://console.groq.com | `GROQ_API_KEY` |
-| Supabase | https://supabase.com | URL + anon key + service key |
-| Razorpay | https://razorpay.com | Key ID + Key Secret |
+- **`frontend/`**: A highly optimized React + Vite application featuring a modern, flat SaaS UI, real-time streaming, and interactive dashboards.
+- **`backend/`**: A robust Python FastAPI server handling authentication, ChromaDB vector indexing, and asynchronous Groq LLM pipelines.
 
-### Step 2 — Backend setup
+</td>
+<td width="50%" valign="top">
 
-```bash
-cd backend
+### 🎯 Founder & Architect
 
-# Copy env file
-cp .env.example .env
-# Edit .env with your keys
+**Mohan Kumar S**
+- *Founder & AI Researcher @ Moh-AI Tech*
+- Specializing in building scalable LLM architectures, bridging academic research with production AI, and automating complex workflows with agentic systems.
 
-# Run with one command
-chmod +x start.sh
-./start.sh
-```
-
-Backend runs at: `http://localhost:8000`  
-API docs at: `http://localhost:8000/api/docs`
-
-### Step 3 — Supabase database setup
-
-1. Go to your Supabase project → SQL Editor
-2. Copy the SQL from `database.py` → `SUPABASE_SCHEMA`
-3. Run it — creates all tables with Row Level Security
-
-### Step 4 — Frontend setup
-
-```bash
-cd frontend
-
-# Install dependencies
-npm install
-
-# Copy env
-cp .env.example .env
-# Add your Supabase URL, anon key, Razorpay key
-
-# Start dev server
-npm run dev
-```
-
-Frontend runs at: `http://localhost:5173`
-
-### Step 5 — Build for production
-
-```bash
-# Frontend build
-cd frontend && npm run build
-# Deploy /dist folder to Vercel
-
-# Backend deploy to Railway
-# 1. Push backend folder to GitHub
-# 2. Connect Railway to your repo
-# 3. Add environment variables
-# 4. Deploy — Railway auto-detects FastAPI
-```
+</td>
+</tr>
+</table>
 
 ---
 
-## 🌐 Deployment (subdomain strategy)
+### 📊 Project Status
 
-```
-mohaitech.com          → GoDaddy/Framer (marketing site)
-app.mohaitech.com      → Vercel (React frontend)  ← CNAME to vercel
-api.mohaitech.com      → Railway (FastAPI backend) ← CNAME to railway
-```
+<div align="center">
+  <img src="https://streak-stats.demolab.com/?user=MohanKumar2002&theme=dark&hide_border=true&background=0D1117" alt="GitHub Streak" />
+</div>
 
-**DNS setup in GoDaddy:**
-1. Add CNAME: `app` → `cname.vercel-dns.com`
-2. Add CNAME: `api` → `your-app.up.railway.app`
+<br/>
 
-Then in Vercel, add custom domain: `app.mohaitech.com`
-
----
-
-## 💰 Pricing tiers (built-in)
-
-| Plan | Price (INR) | Price (USD) | Docs/month | Questions/month |
-|------|-------------|-------------|------------|-----------------|
-| Free | ₹0 | $0 | 3 | 20/day |
-| Student | ₹299 | $4 | 50 | 500 |
-| Professional | ₹999 | $12 | 200 | 5,000 |
-| Business | ₹4,999 | $60 | Unlimited | Unlimited |
-
----
-
-## 🔒 Privacy architecture
-
-- **Documents** are uploaded to your FastAPI server and processed locally
-- **Text** is chunked and embedded using HuggingFace (runs on your server)
-- **Vectors** are stored in ChromaDB on your own server
-- **AI responses** use Groq — only the relevant chunks are sent, never the full document
-- **Supabase** stores only metadata (file name, chunk count, user ID) — never document content
-- For **full on-premise** deployment, replace Supabase with self-hosted PostgreSQL and disable Groq (use Ollama locally)
-
----
-
-## 📈 Revenue path to ₹1 Crore
-
-| Month | Action | Revenue |
-|-------|--------|---------|
-| Jul 2026 | Launch → Product Hunt | ₹1.9L |
-| Aug 2026 | College outreach → Student plan | ₹4.8L |
-| Sep 2026 | Business plan + enterprise | ₹9.5L |
-| Oct 2026 | AppSumo lifetime deal 🔥 | ₹38L |
-| Nov 2026 | Scale + enterprise deals | ₹22L |
-| Dec 2026 | ₹1Cr target reached ✅ | ₹24L |
-
----
-
-## 🛠️ Upgrade roadmap
-
-- [ ] **v3.1** — Tesseract OCR for scanned PDFs
-- [ ] **v3.2** — Voice input (Web Speech API)
-- [ ] **v3.3** — Team collaboration + shared workspaces
-- [ ] **v3.4** — WhatsApp bot integration
-- [ ] **v3.5** — On-premise Docker deployment
-- [ ] **v4.0** — Neural embeddings (sentence-transformers in browser via ONNX)
-
----
-
-## 🏢 Built by
-
-**MOH AI TECH** — Custom AI systems for businesses worldwide  
-Founder: Mohan Kumar S · B.Tech AI & Data Science  
-Location: Namakkal, Tamil Nadu, India  
-Website: moh-ai-tech.vercel.app  
-Email: info@mohaitech.in  
-MSME Registered
+<div align="center">
+  <p><i>"Bridging the gap between raw data and actionable enterprise intelligence."</i></p>
+</div>

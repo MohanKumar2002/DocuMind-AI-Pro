@@ -1,0 +1,15 @@
+{
+  "name": "documind-pro",
+  "version": "3.0.0",
+  "private": true,
+  "description": "DocuMind AI Pro — Enterprise document intelligence by MOH AI TECH",
+  "scripts": {
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && ./start.sh",
+    "install:frontend": "cd frontend && npm install",
+    "build:frontend": "cd frontend && npm run build",
+    "setup": "cd frontend && npm install && echo '✅ Frontend ready. Now run: cd backend && ./start.sh'"
+  },
+  "author": "Mohan Kumar S — MOH AI TECH, Namakkal, Tamil Nadu",
+  "license": "MIT"
+}

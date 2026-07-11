@@ -1,0 +1,42 @@
+.pageOverlay { 
+  display: flex; align-items: center; justify-content: center; 
+  height: 100%; background: var(--bg2); 
+}
+
+.modal { 
+  width: 100%; max-width: 600px; 
+  background: white; border-radius: 16px; 
+  box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04);
+  padding: 32px; border: 1px solid var(--border);
+}
+
+.modalHeader { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.modalHeader h2 { font-size: 20px; color: var(--text); font-weight: 700; margin: 0; }
+.closeBtn { background: none; border: none; font-size: 18px; color: var(--text3); cursor: pointer; padding: 4px; border-radius: 4px; }
+.closeBtn:hover { background: var(--bg); color: var(--text); }
+
+.subtitle { color: var(--text2); font-size: 14px; margin-bottom: 24px; }
+
+.dropzone { 
+  border: 2px dashed var(--border2); 
+  border-radius: 16px; padding: 48px 24px;
+  text-align: center; cursor: pointer; transition: all 0.2s;
+  background: #FAFAFA;
+}
+.dropzone:hover { border-color: var(--primary); background: #F0Fdfa; }
+.dragging { border-color: var(--primary); background: #EEF2FF; }
+
+.idleState, .uploadingState { display: flex; flex-direction: column; align-items: center; }
+
+.uploadIcon { 
+  width: 64px; height: 64px; border-radius: 20px; 
+  background: var(--primary); color: white;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 20px; box-shadow: 0 4px 14px rgba(37,99,235,0.25);
+}
+
+.dropzone h3 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.exts { font-size: 13px; color: var(--text3); letter-spacing: 0.5px; }
+
+.progressBar { width: 100%; max-width: 300px; height: 6px; background: var(--bg); border-radius: 100px; margin-top: 16px; overflow: hidden; }
+.progressFill { height: 100%; background: var(--primary); border-radius: 100px; transition: width 0.3s; }

@@ -20,6 +20,10 @@ export default function LandingPage() {
 
       {/* ── Hero Section ── */}
       <header className={styles.hero}>
+        {/* Background glowing orbs */}
+        <div className={styles.heroOrbPurple} />
+        <div className={styles.heroOrbCyan} />
+
         <div className={styles.badge}>🟢 Now with Tamil, Hindi & Telugu</div>
         <h1 className={styles.heroTitle}>Chat with any document <span className={styles.gradText}>instantly</span></h1>
         <p className={styles.heroDesc}>
@@ -129,6 +133,17 @@ export default function LandingPage() {
             </ul>
             <button className="btn btn-ghost w-full" onClick={() => navigate('/signup')}>Start Free</button>
           </div>
+          {/* Student Tier */}
+          <div className={styles.pricingCard}>
+            <div className={styles.priceName}>Student</div>
+            <div className={styles.priceAmount}>₹299<span className={styles.pricePeriod}>/month</span></div>
+            <ul className={styles.priceFeatures}>
+              <li>✓ 50 documents/month</li>
+              <li>✓ Quiz generator</li>
+              <li>✓ All summary levels</li>
+            </ul>
+            <button className="btn btn-ghost w-full" onClick={() => navigate('/signup')}>Start Trial</button>
+          </div>
           {/* Pro Tier */}
           <div className={`${styles.pricingCard} ${styles.pricingPro}`}>
             <div className={styles.proBadge}>Most Popular</div>
@@ -137,10 +152,20 @@ export default function LandingPage() {
             <ul className={styles.priceFeatures}>
               <li>✓ 200 documents/month</li>
               <li>✓ Data extraction (JSON)</li>
-              <li>✓ Tamil, Hindi, Telugu</li>
               <li>✓ Priority AI models</li>
             </ul>
             <button className="btn btn-primary w-full" onClick={() => navigate('/signup')}>Start Free Trial</button>
+          </div>
+          {/* Business Tier */}
+          <div className={styles.pricingCard}>
+            <div className={styles.priceName}>Business</div>
+            <div className={styles.priceAmount}>₹4,999<span className={styles.pricePeriod}>/month</span></div>
+            <ul className={styles.priceFeatures}>
+              <li>✓ Unlimited documents</li>
+              <li>✓ 10 team members</li>
+              <li>✓ Priority SLA</li>
+            </ul>
+            <button className="btn btn-ghost w-full" onClick={() => navigate('/signup')}>Contact Sales</button>
           </div>
         </div>
       </section>
